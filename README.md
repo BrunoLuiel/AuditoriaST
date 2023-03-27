@@ -3,3 +3,5 @@ Este é um programa de auditoria de arquivos XML focado na busca de conformidade
 Para o arquivo executável funcionar deverá sempre na mesma pasta estar copiado o banco de dados.
 
 O arquivo InsertDataDB.py é pra inserir dados, ou seja voltado pra programação e não para o usuário final.
+
+Próximo objetivo é pesquisar os NCM com 4 caracteres

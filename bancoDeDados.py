@@ -47,18 +47,19 @@ class DataBase():
     def check_st(self, ncm, cest):
         try:
             cursor = self.conection.cursor()
-            cursor.execute(f"""SELECT * FROM SubstituicaoTributaria WHERE ncm = {ncm}""")
-            resultado = cursor.fetchall()
-            if resultado == []:
-                return "O NCM pesquisado não é Substituição tributária"
-            else:
+            for a in [len(ncm), len(ncm)-1, len(ncm)-2, len(ncm)-3, len(ncm)-4]:
+                cursor.execute(f"""SELECT * FROM SubstituicaoTributaria WHERE ncm = {ncm[0:a]}""")
+                resultado = cursor.fetchall()
+                    #Não fiz a exceção de CEST incorreto, pois será mais interessante criar outro código pra verificação de CEST
                 for i in resultado:
-                    if i[0]=='s' and i[4] == ncm and i[3] == cest:
-                        return f"NCM e CEST sujeitos a substituição tributária|conforme item {i[1]} {i[10]}|{i[2]}"
-                    elif i[0]=='s' and i[4] == ncm and cest=="":
+                    if i[0]=='s' and str(i[4]) == str(ncm[0:a]) and i[3] == cest:
+                        return f"NCM e CEST sujeitos a substituição tributária|conforme item {i[1]} {i[10]}|{i[2]}"                        
+                    elif i[0]=='s' and i[4] == ncm[0:a] and cest=="":
                         return f"NCM Localizado mas nao foi declarado CEST|item {i[1]} {i[10]}|{i[2]}"
                     else:
-                        return "O NCM pesquisado NAO E SUJEITO a Substituição tributária"
+                        pass
+                    
+            return "O NCM pesquisado NAO E SUJEITO a Substituição tributária"
         except:
             print("Erro ao consultar NCM/CEST")
 
@@ -67,5 +68,5 @@ class DataBase():
 if __name__ == '__main__':
     a=DataBase()
     a.conecta()
-    print(a.check_st("87082999", ""))
+    print(a.check_st("87072999", ""))
     a.close_conection()
